@@ -1,2 +1,8 @@
 ﻿  Game.cpp
-  RiverwayEngine.vcxproj -> F:\dev\RiverwayEngine\RiverwayEngine\Debug\RiverwayEngine.exe
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(204,13): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(204,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(205,13): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(205,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(4,23): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\dev\RiverwayEngine\RiverwayEngine\RiverwayEngine\Game.cpp(4,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  RiverwayEngine.vcxproj -> C:\dev\RiverwayEngine\RiverwayEngine\Debug\RiverwayEngine.exe

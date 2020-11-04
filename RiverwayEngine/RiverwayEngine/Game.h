@@ -4,6 +4,12 @@
 
 #include <SDL.h>
 
+struct Vector2
+{
+	float x;
+	float y;
+};
+
 class Game
 {
 public:
@@ -26,4 +32,14 @@ private:
 	SDL_Renderer* mRenderer;
 	// Whether the game should continue to run
 	bool mIsRunning;
+	
+	// Total ticks since the last frame, used for deltaTime
+	Uint32 mTicksCount;
+
+	// Which way to move paddle
+	int mPaddleDir;
+
+	// paddle and ball positions
+	Vector2 mPaddlePos;
+	Vector2 mBallPos;
 };

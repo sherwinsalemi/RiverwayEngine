@@ -1,5 +1,8 @@
 #include "Game.h"
 
+const int thickness = 15;
+const float paddleH = 100.0f;
+
 // public
 
 Game::Game()
@@ -22,7 +25,7 @@ bool Game::Initialize()
 		100, //Top left X coordinate of window
 		100, //Top left Y coordinate of window
 		1024, // Window Width
-		748, // Window Height
+		768, // Window Height
 		0 //flags
 	);
 
@@ -43,6 +46,8 @@ bool Game::Initialize()
 		SDL_Log("Failed while initializing SDL Renderer: %s", SDL_GetError());
 		return false;
 	}
+
+	
 
 	return true;
 }
@@ -92,10 +97,51 @@ void Game::ProcessInput()
 	{
 		mIsRunning = false;
 	}
+
+	// Set paddle direction
+	mPaddleDir = 0;
+	if (state[SDL_SCANCODE_W])
+	{
+		mPaddleDir -= 1;
+	}
+	if (state[SDL_SCANCODE_S])
+	{
+		mPaddleDir += 1;
+	}
 }
 
 void Game::UpdateGame()
 {
+	// Limit framerate to 60fps
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
+		;
+
+	// Ticks since last frame, converted to seconds
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+	mTicksCount = SDL_GetTicks();
+	
+	// clamp deltatime to stop jumps
+
+	if (deltaTime > 0.05f)
+	{
+		deltaTime = 0.05f;
+	}
+
+	// Use deltaTime in game stuff
+
+	if (mPaddleDir != 0)
+	{
+		mPaddlePos.y += mPaddleDir * 300.0f * deltaTime;
+		// clamp paddle pos
+		if (mPaddlePos.y < thickness)
+		{
+			mPaddlePos.y = thickness;
+		}
+		else if (mPaddlePos.y > 768 - thickness - paddleH)
+		{
+			mPaddlePos.y = 768 - thickness - paddleH;
+		}
+	}
 }
 
 void Game::GenerateOutput()
@@ -103,16 +149,17 @@ void Game::GenerateOutput()
 	// setup
 	SDL_SetRenderDrawColor(
 		mRenderer,
-		39, // R
-		174, // G
-		96, // B
-		255 // A
+		0, // R
+		0, // G
+		0, // B
+		1 // A
 	);
 
 	SDL_RenderClear(mRenderer);
 
 	// render game
 
+	// draw walls
 	SDL_SetRenderDrawColor(
 		mRenderer,
 		227, // R
@@ -120,15 +167,47 @@ void Game::GenerateOutput()
 		241, // B
 		255 // A
 	);
-
+	// top wall
 	SDL_Rect wall{
-		10, // Top left X
-		10, // Top left Y
-		100, // Width
-		100 // Height
+		0,
+		0,
+		1024,
+		thickness
 	};
 
 	SDL_RenderFillRect(mRenderer, &wall);
+
+	// bottom wall
+	wall.y = 768 - thickness;
+
+	SDL_RenderFillRect(mRenderer, &wall);
+
+	// right wall
+	wall.x = 1024 - thickness;
+	wall.y = 0;
+	wall.w = thickness;
+	wall.h = 768;
+
+	SDL_RenderFillRect(mRenderer, &wall);
+
+	// draw paddle
+
+	SDL_SetRenderDrawColor(
+		mRenderer,
+		0, // R
+		200, // G
+		50, // B
+		255 // A
+	);
+
+	SDL_Rect paddle{
+		mPaddlePos.x,
+		mPaddlePos.y,
+		thickness,
+		paddleH
+	};
+
+	SDL_RenderFillRect(mRenderer, &paddle);
 
 	// swap buffers
 
